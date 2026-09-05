@@ -3,410 +3,393 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mission 2 — Voyage au cœur des zones climatiques</title>
+<title>Mission 2 — Voyage autour du monde</title>
 
 <style>
-* {
-  box-sizing: border-box;
+:root{
+  --blue:#087f8c;
+  --dark:#17324d;
+  --ice:#b9e8ff;
+  --temperate:#9bd49d;
+  --tropical:#ffd76a;
+  --paper:#ffffff;
+  --bg:#eaf6f7;
+  --good:#16803c;
+  --bad:#c0392b;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg, #dff6ff, #eef8e8);
-  color: #17324d;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(135deg,#dff5fa,#f5f9ed);
+  color:var(--dark);
 }
 
-header {
-  background: linear-gradient(135deg, #087f8c, #075985);
-  color: white;
-  padding: 22px;
-  text-align: center;
-  box-shadow: 0 4px 15px #0002;
+header{
+  background:linear-gradient(135deg,#087f8c,#075985);
+  color:white;
+  padding:25px 20px;
+  text-align:center;
 }
 
-header h1 {
-  margin: 0 0 8px;
-  font-size: clamp(1.7rem, 4vw, 2.7rem);
+header h1{
+  margin:0 0 8px;
+  font-size:clamp(1.6rem,4vw,2.7rem);
 }
 
-header p {
-  margin: 0;
-  font-size: 1.05rem;
+header p{
+  margin:0;
+  font-size:1.05rem;
 }
 
-.container {
-  width: min(1200px, 94%);
-  margin: 20px auto;
+.container{
+  width:min(1400px,96%);
+  margin:20px auto;
 }
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  background: white;
-  padding: 15px 20px;
-  border-radius: 18px;
-  box-shadow: 0 4px 15px #0001;
+.top{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  background:white;
+  padding:15px 20px;
+  border-radius:18px;
+  box-shadow:0 4px 15px #0001;
+  margin-bottom:15px;
 }
 
-.score {
-  font-size: 1.25rem;
-  font-weight: bold;
+.score{
+  font-weight:bold;
+  font-size:1.2rem;
 }
 
-.progress {
-  flex: 1;
-  min-width: 200px;
-  height: 18px;
-  background: #dce7ec;
-  border-radius: 20px;
-  overflow: hidden;
+.progress{
+  flex:1;
+  min-width:180px;
+  height:14px;
+  background:#dce7eb;
+  border-radius:20px;
+  overflow:hidden;
 }
 
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #22c55e, #84cc16);
-  transition: width .5s ease;
+.progressBar{
+  width:0;
+  height:100%;
+  background:linear-gradient(90deg,#22c55e,#84cc16);
+  transition:.5s;
 }
 
-.instructions {
-  background: #fff8dc;
-  border-left: 7px solid #f59e0b;
-  padding: 15px 20px;
-  border-radius: 14px;
-  margin: 18px 0;
-  font-size: 1.05rem;
+.instructions{
+  background:#fff8dc;
+  border-left:7px solid #f59e0b;
+  padding:14px 18px;
+  border-radius:14px;
+  margin-bottom:15px;
 }
 
-h2 {
-  text-align: center;
+.game{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:18px;
 }
 
-.game {
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 20px;
+@media(max-width:900px){
+  .game{grid-template-columns:1fr}
 }
 
-.cards-area,
-.map-area {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 5px 20px #0001;
+.mapPanel,
+.missionPanel{
+  background:white;
+  border-radius:20px;
+  box-shadow:0 5px 20px #0001;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.mapPanel{
+  padding:12px;
 }
 
-.card {
-  background: linear-gradient(145deg, #ffffff, #edf7fa);
-  border: 3px solid #b7d9e0;
-  border-radius: 15px;
-  padding: 15px;
-  min-height: 115px;
-  cursor: grab;
-  transition: transform .2s, box-shadow .2s, border-color .2s;
-  user-select: none;
+.missionPanel{
+  padding:18px;
 }
 
-.card:hover {
-  transform: translateY(-4px) rotate(-1deg);
-  box-shadow: 0 8px 18px #0002;
+.mapTitle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:5px 8px 12px;
 }
 
-.card.dragging {
-  opacity: .45;
-  transform: scale(.95);
+.mapTitle h2{
+  margin:0;
 }
 
-.card .emoji {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 7px;
+.map{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  border-radius:18px;
+  border:3px solid #5faabd;
+  background:#9edcf1;
 }
 
-.card p {
-  margin: 0;
-  font-weight: bold;
-  line-height: 1.35;
+svg{
+  display:block;
+  width:100%;
+  height:auto;
 }
 
-.zone {
-  min-height: 130px;
-  margin: 12px 0;
-  border-radius: 18px;
-  padding: 14px;
-  border: 3px dashed;
-  transition: transform .2s, background .2s;
+.ocean{
+  fill:#9edcf1;
 }
 
-.zone.dragover {
-  transform: scale(1.02);
+.zone-polar{
+  fill:var(--ice);
+  opacity:.88;
 }
 
-.polaire {
-  background: #e8f6ff;
-  border-color: #38bdf8;
+.zone-temp{
+  fill:var(--temperate);
+  opacity:.88;
 }
 
-.temperee {
-  background: #ecfdf5;
-  border-color: #22c55e;
+.zone-tropical{
+  fill:var(--tropical);
+  opacity:.9;
 }
 
-.tropicale {
-  background: #fff7d6;
-  border-color: #f59e0b;
+.land{
+  fill:#cdbb8b;
+  stroke:#806d49;
+  stroke-width:1.4;
 }
 
-.zone h3 {
-  margin: 0 0 6px;
-  font-size: 1.3rem;
+.lat{
+  fill:none;
+  stroke:#47788a;
+  stroke-width:1.3;
+  stroke-dasharray:6 6;
+  opacity:.7;
 }
 
-.zone-description {
-  font-size: .92rem;
-  margin-bottom: 8px;
+.equator{
+  stroke:#087f8c;
+  stroke-width:2.5;
 }
 
-.drop-zone {
-  min-height: 50px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.zoneText{
+  font-size:19px;
+  font-weight:900;
+  fill:#17324d;
+  text-anchor:middle;
 }
 
-.placed-card {
-  background: white;
-  border-radius: 10px;
-  padding: 8px 10px;
-  box-shadow: 0 2px 7px #0002;
-  font-size: .9rem;
-  font-weight: bold;
-  animation: appear .35s ease;
+.country{
+  cursor:pointer;
 }
 
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: scale(.7);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.country circle{
+  fill:white;
+  stroke:#087f8c;
+  stroke-width:4;
+  transition:.2s;
 }
 
-.map {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 2 / 1;
-  background: linear-gradient(#9bdcff, #c9efff);
-  border-radius: 18px;
-  overflow: hidden;
-  border: 3px solid #7ab8c8;
-  margin-bottom: 15px;
+.country:hover circle{
+  fill:#087f8c;
+  transform:scale(1.15);
 }
 
-/* Carte du monde stylisée, intégrée au fichier */
-.world {
-  position: absolute;
-  inset: 0;
+.country.selected circle{
+  fill:#087f8c;
 }
 
-.land {
-  position: absolute;
-  background: #72a66d;
-  border: 2px solid #4c8050;
-  opacity: .95;
+.country text{
+  font-size:14px;
+  font-weight:bold;
+  fill:#17324d;
 }
 
-.europe {
-  width: 12%;
-  height: 15%;
-  left: 48%;
-  top: 31%;
-  border-radius: 50% 35% 45% 40%;
+.country.selected text{
+  fill:#073b4c;
 }
 
-.asia {
-  width: 29%;
-  height: 23%;
-  left: 55%;
-  top: 29%;
-  border-radius: 35% 55% 40% 50%;
+.task{
+  border:2px solid #dbe7eb;
+  border-radius:15px;
+  padding:13px;
+  margin-bottom:10px;
+  cursor:pointer;
+  background:#f9fcfd;
+  transition:.2s;
 }
 
-.africa {
-  width: 15%;
-  height: 29%;
-  left: 47%;
-  top: 45%;
-  border-radius: 45% 50% 55% 45%;
+.task:hover{
+  transform:translateY(-2px);
+  border-color:#9bcbd2;
 }
 
-.amerique-nord {
-  width: 21%;
-  height: 25%;
-  left: 10%;
-  top: 25%;
-  border-radius: 45% 40% 55% 35%;
+.task.active{
+  border-color:var(--blue);
+  background:#edfafa;
 }
 
-.amerique-sud {
-  width: 12%;
-  height: 31%;
-  left: 25%;
-  top: 50%;
-  border-radius: 45% 40% 55% 50%;
+.task.done{
+  border-color:#6db47a;
+  background:#edf9ef;
 }
 
-.australie {
-  width: 13%;
-  height: 13%;
-  right: 10%;
-  bottom: 20%;
-  border-radius: 50%;
+.task strong{
+  display:block;
+  margin-bottom:4px;
 }
 
-.france-point {
-  position: absolute;
-  left: 50%;
-  top: 38%;
-  width: 20px;
-  height: 20px;
-  background: #ef4444;
-  border: 4px solid white;
-  border-radius: 50%;
-  box-shadow: 0 0 0 5px #ef444455;
-  cursor: pointer;
-  animation: pulse 1.4s infinite;
+.task small{
+  color:#647783;
 }
 
-@keyframes pulse {
-  50% {
-    box-shadow: 0 0 0 12px #ef444400;
-  }
+.feedback{
+  min-height:90px;
+  border-radius:15px;
+  padding:14px;
+  background:#f0f5f7;
+  margin-top:15px;
+  line-height:1.45;
 }
 
-.map-label {
-  position: absolute;
-  background: white;
-  padding: 5px 9px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: .85rem;
-  box-shadow: 0 2px 6px #0002;
+.feedback.good{
+  background:#e8f8ec;
+  color:#176632;
 }
 
-#feedback {
-  min-height: 55px;
-  padding: 15px;
-  border-radius: 13px;
-  margin-top: 10px;
-  font-weight: bold;
-  text-align: center;
+.feedback.bad{
+  background:#fff0ee;
+  color:#9b332b;
 }
 
-.good {
-  background: #dcfce7;
-  color: #166534;
+.answers{
+  margin-top:12px;
+  display:grid;
+  gap:8px;
 }
 
-.bad {
-  background: #fee2e2;
-  color: #991b1b;
+button{
+  border:0;
+  border-radius:12px;
+  padding:12px 14px;
+  min-height:44px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:.95rem;
 }
 
-button {
-  border: none;
-  border-radius: 12px;
-  padding: 12px 18px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  background: #087f8c;
-  color: white;
-  transition: transform .2s, background .2s;
+.answer{
+  background:#087f8c;
+  color:white;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  background: #075985;
+.answer:hover{
+  background:#075985;
 }
 
-.answer-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+.reset{
+  width:100%;
+  margin-top:15px;
+  background:#e9eef0;
+  color:#17324d;
 }
 
-.hidden {
-  display: none;
+.legend{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:12px 5px 4px;
 }
 
-.final {
-  text-align: center;
-  background: linear-gradient(135deg, #fff, #e8fff0);
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 5px 20px #0002;
-  margin-top: 20px;
+.legendItem{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:.88rem;
+  font-weight:bold;
 }
 
-.badge {
-  font-size: 4rem;
-  animation: bounce 1s infinite alternate;
+.color{
+  width:22px;
+  height:16px;
+  border-radius:4px;
+  border:1px solid #71858d;
 }
 
-@keyframes bounce {
-  to {
-    transform: translateY(-10px);
-  }
+.hint{
+  color:#617783;
+  font-size:.85rem;
+  margin-top:8px;
 }
 
-.confetti {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  top: -20px;
-  animation: fall 2.5s linear forwards;
-  z-index: 1000;
+.final{
+  display:none;
+  text-align:center;
+  background:white;
+  border-radius:20px;
+  padding:30px;
+  margin-top:18px;
+  box-shadow:0 5px 20px #0001;
 }
 
-@keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(720deg);
+.final.show{
+  display:block;
+}
+
+.badge{
+  font-size:4rem;
+}
+
+.success{
+  color:#16803c;
+}
+
+.shake{
+  animation:shake .35s;
+}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-8px)}
+  75%{transform:translateX(8px)}
+}
+
+.pop{
+  animation:pop .4s;
+}
+
+@keyframes pop{
+  50%{transform:scale(1.03)}
+}
+
+.confetti{
+  position:fixed;
+  width:10px;
+  height:10px;
+  top:-15px;
+  z-index:9999;
+  animation:fall 2.5s linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(720deg);
   }
 }
 
-@media (max-width: 850px) {
-  .game {
-    grid-template-columns: 1fr;
-  }
-
-  .cards {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 500px) {
-  .container {
-    width: 96%;
-  }
-
-  .cards-area,
-  .map-area {
-    padding: 13px;
+@media(prefers-reduced-motion:reduce){
+  *{
+    animation:none!important;
+    transition:none!important;
   }
 }
 </style>
@@ -415,444 +398,753 @@ button:hover {
 <body>
 
 <header>
-  <h1>🌍 MISSION 2 — VOYAGE AU CŒUR DES ZONES CLIMATIQUES</h1>
-  <p>Ton équipe doit aider les voyageurs à retrouver leur zone climatique !</p>
+  <h1>🌍 MISSION 2 — VOYAGE AUTOUR DU MONDE</h1>
+  <p>Explore la carte et retrouve les grandes zones climatiques de la Terre.</p>
 </header>
 
 <div class="container">
 
-  <div class="topbar">
+  <div class="top">
     <div class="score">⭐ Score : <span id="score">0</span> / 8</div>
     <div class="progress">
-      <div class="progress-bar" id="progress"></div>
+      <div class="progressBar" id="progress"></div>
     </div>
-    <div>🧭 Mission : <span id="counter">0</span>/8</div>
+    <div>🧭 Missions : <span id="count">0</span> / 8</div>
   </div>
 
   <div class="instructions">
-    <strong>🎯 Mission :</strong>
-    Fais glisser chaque carte dans la bonne zone climatique.
-    <br>
-    💡 Tu peux aussi cliquer sur une carte puis choisir une zone.
+    <strong>🎯 Ta mission :</strong>
+    sélectionne une mission à droite, puis utilise la grande carte du monde.
+    Observe la latitude et les couleurs pour trouver la bonne réponse.
   </div>
 
   <div class="game">
 
-    <section class="cards-area">
-      <h2>🧳 Les cartes voyageur</h2>
+    <!-- GRANDE CARTE -->
+    <section class="mapPanel">
 
-      <div class="cards" id="cards">
+      <div class="mapTitle">
+        <h2>🗺️ Grande carte du monde</h2>
+        <strong>🌐 Nord ↑ / Sud ↓</strong>
+      </div>
 
-        <div class="card" draggable="true"
-             data-answer="polaire">
-          <span class="emoji">🧊</span>
-          <p>Il fait froid toute l'année.</p>
+      <div class="map" id="map">
+
+        <svg viewBox="0 0 1200 620"
+             role="img"
+             aria-labelledby="mapTitle mapDescription">
+
+          <title id="mapTitle">
+            Carte simplifiée du monde et grandes zones climatiques
+          </title>
+
+          <desc id="mapDescription">
+            Carte pédagogique montrant les zones polaire, tempérée et tropicale
+            ainsi que plusieurs destinations.
+          </desc>
+
+          <!-- OCÉAN -->
+          <rect class="ocean"
+                x="0"
+                y="0"
+                width="1200"
+                height="620"/>
+
+          <!-- ZONE POLAIRE NORD -->
+          <path class="zone-polar"
+                d="M0 0 H1200 V100
+                   C1000 125 800 125 600 100
+                   C400 125 200 125 0 100 Z"/>
+
+          <!-- ZONE TEMPÉRÉE NORD -->
+          <path class="zone-temp"
+                d="M0 100
+                   C200 125 400 125 600 100
+                   C800 125 1000 125 1200 100
+                   V220
+                   C1000 195 800 195 600 220
+                   C400 195 200 195 0 220 Z"/>
+
+          <!-- ZONE TROPICALE -->
+          <path class="zone-tropical"
+                d="M0 220
+                   C200 195 400 195 600 220
+                   C800 195 1000 195 1200 220
+                   V400
+                   C1000 425 800 425 600 400
+                   C400 425 200 425 0 400 Z"/>
+
+          <!-- ZONE TEMPÉRÉE SUD -->
+          <path class="zone-temp"
+                d="M0 400
+                   C200 425 400 425 600 400
+                   C800 425 1000 425 1200 400
+                   V520
+                   C1000 495 800 495 600 520
+                   C400 495 200 495 0 520 Z"/>
+
+          <!-- ZONE POLAIRE SUD -->
+          <path class="zone-polar"
+                d="M0 520
+                   C200 495 400 495 600 520
+                   C800 495 1000 495 1200 520
+                   V620 H0 Z"/>
+
+          <!-- CONTINENTS SIMPLIFIÉS -->
+          <path class="land"
+                d="M105 145
+                   L150 105 225 100 275 135
+                   260 175 215 185 185 215
+                   130 200 100 170 Z"/>
+
+          <path class="land"
+                d="M270 300
+                   L315 320 335 380 310 450
+                   275 410 285 355 Z"/>
+
+          <path class="land"
+                d="M470 145
+                   L515 125 555 145 550 180
+                   510 190 485 175 Z"/>
+
+          <path class="land"
+                d="M535 155
+                   L610 130 690 145 755 125
+                   835 155 920 145
+                   1010 190 975 235
+                   890 220 820 245
+                   750 220 680 245
+                   620 215 570 205 Z"/>
+
+          <path class="land"
+                d="M575 265
+                   L650 275 690 330
+                   675 390 625 430
+                   585 390 555 330 Z"/>
+
+          <path class="land"
+                d="M890 405
+                   L960 395 1035 425
+                   1010 465 940 470
+                   890 445 Z"/>
+
+          <!-- LIGNES DE LATITUDE -->
+          <path class="lat" d="M0 100 H1200"/>
+          <path class="lat" d="M0 220 H1200"/>
+          <path class="equator" d="M0 310 H1200"/>
+          <path class="lat" d="M0 400 H1200"/>
+          <path class="lat" d="M0 520 H1200"/>
+
+          <!-- ÉTIQUETTES DES ZONES -->
+          <text class="zoneText" x="600" y="65">
+            🧊 ZONE POLAIRE
+          </text>
+
+          <text class="zoneText" x="600" y="170">
+            🌳 ZONE TEMPÉRÉE
+          </text>
+
+          <text class="zoneText" x="600" y="325">
+            🌴 ZONE TROPICALE
+          </text>
+
+          <text class="zoneText" x="600" y="575">
+            🧊 ZONE POLAIRE
+          </text>
+
+          <text x="15" y="302"
+                font-size="15"
+                font-weight="bold"
+                fill="#075985">
+            ÉQUATEUR
+          </text>
+
+          <!-- DESTINATIONS -->
+
+          <g class="country"
+             data-place="greenland"
+             tabindex="0">
+            <circle cx="190" cy="115" r="12"/>
+            <text x="210" y="110">Groenland</text>
+          </g>
+
+          <g class="country"
+             data-place="france"
+             tabindex="0">
+            <circle cx="515" cy="165" r="12"/>
+            <text x="535" y="160">France 🇫🇷</text>
+          </g>
+
+          <g class="country"
+             data-place="bresil"
+             tabindex="0">
+            <circle cx="300" cy="310" r="12"/>
+            <text x="320" y="305">Brésil</text>
+          </g>
+
+          <g class="country"
+             data-place="congo"
+             tabindex="0">
+            <circle cx="625" cy="315" r="12"/>
+            <text x="645" y="310">Afrique centrale</text>
+          </g>
+
+          <g class="country"
+             data-place="indonesie"
+             tabindex="0">
+            <circle cx="825" cy="305" r="12"/>
+            <text x="845" y="300">Indonésie</text>
+          </g>
+
+          <g class="country"
+             data-place="australie"
+             tabindex="0">
+            <circle cx="950" cy="425" r="12"/>
+            <text x="970" y="420">Australie</text>
+          </g>
+
+        </svg>
+
+      </div>
+
+      <div class="legend">
+
+        <div class="legendItem">
+          <span class="color"
+                style="background:var(--ice)"></span>
+          Polaire
         </div>
 
-        <div class="card" draggable="true"
-             data-answer="temperee">
-          <span class="emoji">🍂</span>
-          <p>Il existe une saison froide et une saison chaude.</p>
+        <div class="legendItem">
+          <span class="color"
+                style="background:var(--temperate)"></span>
+          Tempérée
         </div>
 
-        <div class="card" draggable="true"
-             data-answer="tropicale">
-          <span class="emoji">🌴</span>
-          <p>Il fait chaud toute l'année.</p>
-        </div>
-
-        <div class="card" draggable="true"
-             data-answer="polaire">
-          <span class="emoji">🐧</span>
-          <p>Les paysages sont dominés par la glace et la neige.</p>
-        </div>
-
-        <div class="card" draggable="true"
-             data-answer="temperee">
-          <span class="emoji">🌳</span>
-          <p>Les saisons sont bien différenciées.</p>
-        </div>
-
-        <div class="card" draggable="true"
-             data-answer="tropicale">
-          <span class="emoji">☀️</span>
-          <p>Les températures restent élevées une grande partie de l'année.</p>
-        </div>
-
-        <div class="card" draggable="true"
-             data-answer="polaire">
-          <span class="emoji">🏔️</span>
-          <p>Les températures sont très basses.</p>
-        </div>
-
-        <div class="card" draggable="true"
-             data-answer="temperee">
-          <span class="emoji">🍁</span>
-          <p>On observe des périodes froides et chaudes au cours de l'année.</p>
+        <div class="legendItem">
+          <span class="color"
+                style="background:var(--tropical)"></span>
+          Tropicale
         </div>
 
       </div>
 
-      <div id="answerArea" class="hidden">
-        <p><strong>Cette carte correspond à quelle zone ?</strong></p>
-        <div class="answer-buttons">
-          <button onclick="chooseAnswer('polaire')">🧊 Polaire</button>
-          <button onclick="chooseAnswer('temperee')">🌳 Tempérée</button>
-          <button onclick="chooseAnswer('tropicale')">🌴 Tropicale</button>
-        </div>
+      <div class="hint">
+        💡 Les limites sont volontairement simplifiées pour aider à comprendre
+        l'organisation générale des grandes zones climatiques.
       </div>
 
-      <div id="feedback"></div>
     </section>
 
 
-    <section class="map-area">
-      <h2>🗺️ La carte du monde</h2>
+    <!-- MISSIONS -->
+    <aside class="missionPanel">
 
-      <div class="map">
+      <h2>🧳 Tes missions</h2>
 
-        <div class="world">
-          <div class="land amerique-nord"></div>
-          <div class="land amerique-sud"></div>
-          <div class="land europe"></div>
-          <div class="land asia"></div>
-          <div class="land africa"></div>
-          <div class="land australie"></div>
+      <p style="margin:8px 0 15px;color:#607683">
+        Clique sur une mission puis réponds à partir de la carte.
+      </p>
 
-          <div class="map-label" style="left:4%;top:8%">
-            Amérique
-          </div>
+      <div id="missions"></div>
 
-          <div class="map-label" style="left:44%;top:8%">
-            Europe
-          </div>
-
-          <div class="map-label" style="right:5%;top:8%">
-            Asie
-          </div>
-
-          <div class="france-point"
-               title="France"
-               onclick="franceQuestion()">
-          </div>
-
-          <div class="map-label"
-               style="left:51%;top:42%">
-            🇫🇷 France
-          </div>
-        </div>
-
+      <div class="feedback"
+           id="feedback"
+           aria-live="polite">
+        Choisis une mission pour commencer.
       </div>
 
-      <div class="instructions">
-        <strong>🇫🇷 Défi France :</strong><br>
-        Clique sur le point rouge pour découvrir le défi.
-      </div>
+      <div id="answers"></div>
 
-      <div id="franceFeedback"></div>
+      <button class="reset"
+              id="reset"
+              type="button">
+        🔄 Recommencer
+      </button>
 
-    </section>
+    </aside>
 
   </div>
 
 
-  <div id="final" class="final hidden">
+  <section class="final" id="final">
+
     <div class="badge" id="badge">🏆</div>
-    <h2>Mission accomplie !</h2>
-    <p id="finalText"></p>
+
+    <h2 class="success">
+      Mission accomplie !
+    </h2>
+
+    <p id="finalMessage"></p>
 
     <p>
-      <strong>🧠 Ce que tu as appris :</strong><br>
-      La Terre possède de grandes zones climatiques :
-      <strong>polaire, tempérée et tropicale.</strong>
+      🧠 <strong>À retenir :</strong><br>
+      La Terre présente de grandes zones climatiques.
+      Leur répartition est notamment liée à la latitude.
     </p>
 
-    <button onclick="location.reload()">🔄 Recommencer la mission</button>
-  </div>
+    <button class="answer"
+            id="restartFinal"
+            type="button">
+      🔄 Refaire la mission
+    </button>
+
+  </section>
 
 </div>
 
 
 <script>
 
+const missions = [
+
+  {
+    id:1,
+    title:"🧊 Trouve une région polaire",
+    hint:"Clique sur le Groenland.",
+    place:"greenland",
+    answer:"polaire",
+    success:"Bravo ! Le Groenland est situé dans une région polaire."
+  },
+
+  {
+    id:2,
+    title:"🇫🇷 Retrouve la France",
+    hint:"Clique sur la France.",
+    place:"france",
+    answer:"temperee",
+    success:"Bravo ! La France se situe dans la zone tempérée."
+  },
+
+  {
+    id:3,
+    title:"🌴 Pars au Brésil",
+    hint:"Clique sur le Brésil.",
+    place:"bresil",
+    answer:"tropicale",
+    success:"Bien joué ! Le Brésil est en grande partie situé dans les régions tropicales."
+  },
+
+  {
+    id:4,
+    title:"☀️ Trouve une région proche de l'équateur",
+    hint:"Clique sur l'Afrique centrale.",
+    place:"congo",
+    answer:"tropicale",
+    success:"Exact ! L'Afrique centrale se situe dans la zone tropicale."
+  },
+
+  {
+    id:5,
+    title:"🌴 Direction l'Indonésie",
+    hint:"Clique sur l'Indonésie.",
+    place:"indonesie",
+    answer:"tropicale",
+    success:"Bravo ! L'Indonésie est située près de l'équateur."
+  },
+
+  {
+    id:6,
+    title:"🌏 Observe l'Australie",
+    hint:"Clique sur l'Australie.",
+    place:"australie",
+    answer:"temperee",
+    success:"Bien joué ! Dans cette représentation simplifiée, l'Australie est repérée dans une zone tempérée."
+  },
+
+  {
+    id:7,
+    title:"🧭 Quelle zone entoure l'équateur ?",
+    hint:"Choisis la bonne zone.",
+    place:null,
+    answer:"tropicale",
+    success:"Exact ! Dans ce modèle pédagogique, la zone autour de l'équateur est tropicale."
+  },
+
+  {
+    id:8,
+    title:"🍂 Où trouve-t-on des saisons contrastées ?",
+    hint:"Choisis la bonne zone.",
+    place:null,
+    answer:"temperee",
+    success:"Bravo ! La zone tempérée est caractérisée ici par l'alternance de saisons froides et chaudes."
+  }
+
+];
+
+
+let current = 0;
 let score = 0;
-let completed = 0;
-let selectedCard = null;
+let completed = new Set();
 
-const cards = document.querySelectorAll(".card");
-const zones = document.querySelectorAll(".zone");
 
-cards.forEach(card => {
+const missionsEl = document.getElementById("missions");
+const feedbackEl = document.getElementById("feedback");
+const answersEl = document.getElementById("answers");
+const scoreEl = document.getElementById("score");
+const countEl = document.getElementById("count");
+const progressEl = document.getElementById("progress");
+const finalEl = document.getElementById("final");
+const finalMessage = document.getElementById("finalMessage");
 
-  card.addEventListener("dragstart", () => {
-    selectedCard = card;
-    card.classList.add("dragging");
-  });
 
-  card.addEventListener("dragend", () => {
-    card.classList.remove("dragging");
-  });
+function renderMissions(){
 
-  card.addEventListener("click", () => {
-    selectedCard = card;
+  missionsEl.innerHTML = "";
 
-    document.getElementById("answerArea")
-      .classList.remove("hidden");
+  missions.forEach((mission,index)=>{
 
-    document.getElementById("feedback").textContent =
-      "Choisis maintenant la zone climatique.";
+    const button = document.createElement("button");
 
-    document.getElementById("feedback").className = "";
-  });
+    button.type = "button";
 
-});
+    button.className =
+      "task " +
+      (index === current ? "active " : "") +
+      (completed.has(mission.id) ? "done" : "");
 
-function createZones() {
+    button.innerHTML = `
+      <strong>
+        ${mission.title}
+      </strong>
+      <small>
+        ${completed.has(mission.id) ? "✅ Mission réussie" : mission.hint}
+      </small>
+    `;
 
-  const cardsArea = document.querySelector(".cards-area");
-
-  const zoneHTML = `
-    <div class="zones">
-      <div class="zone polaire"
-           data-zone="polaire">
-        <h3>🧊 ZONE POLAIRE</h3>
-        <div class="zone-description">
-          Températures très basses.
-        </div>
-        <div class="drop-zone"></div>
-      </div>
-
-      <div class="zone temperee"
-           data-zone="temperee">
-        <h3>🌳 ZONE TEMPÉRÉE</h3>
-        <div class="zone-description">
-          Saison froide et saison chaude.
-        </div>
-        <div class="drop-zone"></div>
-      </div>
-
-      <div class="zone tropicale"
-           data-zone="tropicale">
-        <h3>🌴 ZONE TROPICALE</h3>
-        <div class="zone-description">
-          Températures élevées toute l'année.
-        </div>
-        <div class="drop-zone"></div>
-      </div>
-    </div>
-  `;
-
-  cardsArea.insertAdjacentHTML("beforeend", zoneHTML);
-
-  document.querySelectorAll(".zone").forEach(zone => {
-
-    zone.addEventListener("dragover", e => {
-      e.preventDefault();
-      zone.classList.add("dragover");
+    button.addEventListener("click",()=>{
+      selectMission(index);
     });
 
-    zone.addEventListener("dragleave", () => {
-      zone.classList.remove("dragover");
-    });
-
-    zone.addEventListener("drop", e => {
-      e.preventDefault();
-      zone.classList.remove("dragover");
-
-      if (selectedCard) {
-        checkAnswer(selectedCard, zone.dataset.zone);
-      }
-    });
+    missionsEl.appendChild(button);
 
   });
+
 }
 
-function chooseAnswer(zone) {
 
-  if (!selectedCard) return;
+function selectMission(index){
 
-  checkAnswer(selectedCard, zone);
+  current = index;
+
+  const mission = missions[current];
+
+  renderMissions();
+
+  answersEl.innerHTML = "";
+
+  feedbackEl.className = "feedback";
+
+  feedbackEl.textContent =
+    "🎯 " + mission.hint;
+
+  if(!mission.place){
+    createAnswerButtons();
+  }
+
 }
 
-function checkAnswer(card, zone) {
 
-  const correct = card.dataset.answer;
+function createAnswerButtons(){
 
-  if (correct === zone) {
+  const wrapper = document.createElement("div");
+
+  wrapper.className = "answers";
+
+  const title = document.createElement("strong");
+
+  title.textContent =
+    "Quelle zone climatique ?";
+
+  wrapper.appendChild(title);
+
+  const options = [
+    ["polaire","🧊 Polaire"],
+    ["temperee","🌳 Tempérée"],
+    ["tropicale","🌴 Tropicale"]
+  ];
+
+  options.forEach(([value,label])=>{
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "answer";
+    button.textContent = label;
+
+    button.addEventListener("click",()=>{
+      evaluate(value);
+    });
+
+    wrapper.appendChild(button);
+
+  });
+
+  answersEl.appendChild(wrapper);
+
+}
+
+
+function evaluate(value){
+
+  const mission = missions[current];
+
+  if(completed.has(mission.id)){
+    return;
+  }
+
+  if(value === mission.answer){
+
+    completed.add(mission.id);
 
     score++;
-    completed++;
 
-    const clone = document.createElement("div");
-    clone.className = "placed-card";
-    clone.innerHTML =
-      card.querySelector("p").textContent;
+    feedbackEl.className =
+      "feedback good";
 
-    document
-      .querySelector(`.zone[data-zone="${zone}"] .drop-zone`)
-      .appendChild(clone);
+    feedbackEl.textContent =
+      "🎉 " + mission.success;
 
-    card.remove();
+    answersEl.innerHTML = "";
 
-    showFeedback(
-      "🎉 Bravo ! C'est la bonne zone climatique.",
-      true
-    );
+    document.getElementById("map")
+      .classList.add("pop");
 
-    confetti();
+    setTimeout(()=>{
+      document.getElementById("map")
+        .classList.remove("pop");
+    },450);
 
-  } else {
+    celebrate();
 
-    showFeedback(
-      "❌ Pas tout à fait. Observe bien les indices de la carte.",
-      false
-    );
+    update();
 
-    card.animate([
-      { transform: "translateX(0)" },
-      { transform: "translateX(-8px)" },
-      { transform: "translateX(8px)" },
-      { transform: "translateX(0)" }
-    ], {duration: 350});
+    if(completed.size === missions.length){
+
+      setTimeout(showFinal,700);
+
+    }else{
+
+      setTimeout(()=>{
+
+        const next =
+          missions.findIndex(
+            m=>!completed.has(m.id)
+          );
+
+        if(next >= 0){
+          selectMission(next);
+        }
+
+      },700);
+
+    }
+
+  }else{
+
+    feedbackEl.className =
+      "feedback bad";
+
+    feedbackEl.textContent =
+      "❌ Pas encore. Observe la latitude et les couleurs de la carte.";
+
+    document.getElementById("map")
+      .classList.add("shake");
+
+    setTimeout(()=>{
+      document.getElementById("map")
+        .classList.remove("shake");
+    },400);
+
   }
 
-  selectedCard = null;
-
-  document.getElementById("answerArea")
-    .classList.add("hidden");
-
-  updateScore();
-
-  if (completed === 8) {
-    setTimeout(showFinal, 700);
-  }
 }
 
-function showFeedback(text, good) {
 
-  const feedback = document.getElementById("feedback");
+function update(){
 
-  feedback.textContent = text;
-  feedback.className = good ? "good" : "bad";
+  scoreEl.textContent = score;
+
+  countEl.textContent =
+    completed.size;
+
+  progressEl.style.width =
+    ((completed.size / missions.length)*100) + "%";
+
+  renderMissions();
+
 }
 
-function updateScore() {
 
-  document.getElementById("score").textContent = score;
-  document.getElementById("counter").textContent = completed;
+document
+  .querySelectorAll(".country")
+  .forEach(place=>{
 
-  document.getElementById("progress").style.width =
-    ((completed / 8) * 100) + "%";
-}
+    place.addEventListener("click",()=>{
 
-function showFinal() {
+      const mission =
+        missions[current];
 
-  const final = document.getElementById("final");
-  final.classList.remove("hidden");
+      if(!mission.place){
 
-  const text = document.getElementById("finalText");
+        createAnswerButtons();
 
-  if (score === 8) {
+        feedbackEl.className =
+          "feedback";
 
-    document.getElementById("badge").textContent = "🏆";
+        feedbackEl.textContent =
+          "Cette mission se résout avec les choix ci-dessous.";
 
-    text.textContent =
-      "Excellent ! Ton équipe maîtrise parfaitement les grandes zones climatiques.";
+        return;
 
-  } else if (score >= 6) {
+      }
 
-    document.getElementById("badge").textContent = "🥇";
+      if(place.dataset.place === mission.place){
 
-    text.textContent =
-      "Très bon travail ! Tu sais reconnaître les principales zones climatiques.";
+        evaluate(mission.answer);
 
-  } else {
+      }else{
 
-    document.getElementById("badge").textContent = "🌱";
+        feedbackEl.className =
+          "feedback bad";
 
-    text.textContent =
-      "Mission réussie ! Rejoue pour améliorer ton score.";
-  }
+        feedbackEl.textContent =
+          "❌ Ce n'est pas le lieu recherché. Relis l'indice de la mission.";
 
-  final.scrollIntoView({
-    behavior: "smooth"
+      }
+
+    });
+
+
+    place.addEventListener("keydown",event=>{
+
+      if(event.key === "Enter" ||
+         event.key === " "){
+
+        event.preventDefault();
+
+        place.click();
+
+      }
+
+    });
+
   });
-}
 
-function franceQuestion() {
 
-  const area = document.getElementById("franceFeedback");
-
-  area.innerHTML = `
-    <div class="instructions">
-      🇫🇷 <strong>Défi :</strong><br>
-      La France se trouve dans quelle grande zone climatique ?
-      <div class="answer-buttons">
-        <button onclick="franceAnswer('polaire')">🧊 Polaire</button>
-        <button onclick="franceAnswer('temperee')">🌳 Tempérée</button>
-        <button onclick="franceAnswer('tropicale')">🌴 Tropicale</button>
-      </div>
-    </div>
-  `;
-}
-
-function franceAnswer(answer) {
-
-  const area = document.getElementById("franceFeedback");
-
-  if (answer === "temperee") {
-
-    area.innerHTML = `
-      <div class="good">
-        🎉 Bravo ! La France se situe dans la zone tempérée.
-      </div>
-    `;
-
-    confetti();
-
-  } else {
-
-    area.innerHTML = `
-      <div class="bad">
-        ❌ Regarde la localisation de la France et les caractéristiques
-        des différentes zones.
-      </div>
-    `;
-  }
-}
-
-function confetti() {
+function celebrate(){
 
   const colors = [
     "#ef4444",
     "#22c55e",
     "#3b82f6",
     "#f59e0b",
-    "#a855f7"
+    "#a855f7",
+    "#14b8a6"
   ];
 
-  for (let i = 0; i < 18; i++) {
+  for(let i=0;i<24;i++){
 
-    const piece = document.createElement("div");
+    const piece =
+      document.createElement("div");
 
     piece.className = "confetti";
 
     piece.style.left =
-      Math.random() * 100 + "vw";
+      Math.random()*100 + "vw";
 
     piece.style.background =
-      colors[Math.floor(Math.random() * colors.length)];
+      colors[
+        Math.floor(
+          Math.random()*colors.length
+        )
+      ];
 
     piece.style.animationDelay =
-      Math.random() * .4 + "s";
+      Math.random()*.5 + "s";
 
     document.body.appendChild(piece);
 
-    setTimeout(() => piece.remove(), 3000);
+    setTimeout(()=>{
+      piece.remove();
+    },3000);
+
   }
+
 }
 
-createZones();
+
+function showFinal(){
+
+  finalEl.classList.add("show");
+
+  if(score === 8){
+
+    document.getElementById("badge")
+      .textContent = "🏆";
+
+    finalMessage.textContent =
+      "Excellent ! Ton équipe maîtrise les grandes zones climatiques.";
+
+  }else if(score >= 6){
+
+    document.getElementById("badge")
+      .textContent = "🥇";
+
+    finalMessage.textContent =
+      "Très bon travail ! Tu sais te repérer dans les grandes zones climatiques.";
+
+  }else{
+
+    document.getElementById("badge")
+      .textContent = "🌱";
+
+    finalMessage.textContent =
+      "Mission réussie ! Recommence pour améliorer ton score.";
+
+  }
+
+  finalEl.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+}
+
+
+function resetGame(){
+
+  current = 0;
+  score = 0;
+  completed.clear();
+
+  finalEl.classList.remove("show");
+
+  feedbackEl.className =
+    "feedback";
+
+  feedbackEl.textContent =
+    "Choisis une mission pour commencer.";
+
+  answersEl.innerHTML = "";
+
+  update();
+
+}
+
+
+document
+  .getElementById("reset")
+  .addEventListener("click",resetGame);
+
+
+document
+  .getElementById("restartFinal")
+  .addEventListener("click",resetGame);
+
+
+renderMissions();
+update();
 
 </script>
 
